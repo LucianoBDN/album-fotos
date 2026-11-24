@@ -1,0 +1,475 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+}
+
+.account-page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  align-items: start;
+  padding: 112px 24px 110px;
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.account-card {
+  width: min(720px, 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: var(--color-surface);
+  padding: 32px;
+}
+
+.eyebrow {
+  color: var(--color-violet);
+  letter-spacing: 3px;
+  font-size: 10px;
+}
+
+.account-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+h1 {
+  margin: 8px 0 0;
+  font-size: clamp(28px, 6vw, 36px);
+  font-weight: 400;
+}
+
+.account-avatar {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-red), var(--color-red-dark));
+  color: white;
+  font-size: 28px;
+}
+
+.account-tabs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 8px;
+}
+
+.account-tabs button {
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-muted);
+  padding: 10px;
+  cursor: pointer;
+}
+
+.account-tabs button.active {
+  background: rgba(167, 139, 250, .12);
+  color: var(--color-violet);
+}
+
+.status-message {
+  margin: 0 0 14px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 12px;
+}
+
+.status-message.error {
+  background: rgba(239, 64, 86, .1);
+  color: #ff8292;
+}
+
+.status-message.success {
+  background: rgba(167, 139, 250, .1);
+  color: var(--color-violet);
+}
+
+.profile-section {
+  display: grid;
+  gap: 8px;
+}
+
+.profile-section label,
+.memory-edit-form label {
+  display: grid;
+  gap: 8px;
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.profile-section input,
+.memory-edit-form input,
+.memory-edit-form select,
+.memory-edit-form textarea,
+.category-form input {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-bg-soft);
+  color: var(--color-text);
+  padding: 12px;
+  font: inherit;
+}
+
+.profile-note {
+  color: var(--color-muted);
+  font-size: 12px;
+}
+
+.install-status {
+  color: var(--color-violet);
+}
+
+.install-app-button {
+  width: 100%;
+  margin-top: 8px;
+  border: 1px solid rgba(167, 139, 250, .35);
+  border-radius: 9px;
+  background: rgba(167, 139, 250, .12);
+  color: var(--color-violet);
+  padding: 12px;
+  cursor: pointer;
+}
+
+.account-empty {
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  min-height: 180px;
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.account-empty span {
+  color: var(--color-red);
+  font-size: 36px;
+}
+
+.memories-admin {
+  display: grid;
+  gap: 10px;
+}
+
+.own-memory-count {
+  margin: 0 0 10px;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.memory-admin-row {
+  display: grid;
+  grid-template-columns: 64px 1fr auto;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.memory-admin-row img {
+  width: 64px;
+  height: 64px;
+  border-radius: 7px;
+  object-fit: cover;
+}
+
+.memory-admin-row strong,
+.memory-admin-row small,
+.memory-admin-row p {
+  display: block;
+}
+
+.memory-admin-row small,
+.memory-admin-row p {
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.row-actions,
+.edit-actions,
+.category-list article > div {
+  display: flex;
+  gap: 6px;
+}
+
+.row-actions button,
+.edit-actions button,
+.category-list button,
+.category-form button {
+  width: auto;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: var(--color-surface-strong);
+  color: var(--color-text);
+  padding: 8px 10px;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.row-actions .delete,
+.category-list .delete {
+  border-color: rgba(239, 64, 86, .35);
+  color: #ff8292;
+}
+
+.memory-edit-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px;
+}
+
+.wide-field {
+  grid-column: 1 / -1;
+}
+
+.favorite-field {
+  grid-template-columns: auto 1fr;
+  align-items: center;
+}
+
+.favorite-field input {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--color-red);
+}
+
+.category-form {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.category-list {
+  display: grid;
+  gap: 8px;
+}
+
+.category-list article {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid var(--color-border);
+  border-radius: 9px;
+  padding: 10px;
+}
+
+button {
+  width: 100%;
+  border: 0;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--color-red), var(--color-red-dark));
+  color: white;
+  padding: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.logout-button {
+  margin-top: 22px;
+  background: transparent;
+  border: 1px solid rgba(239, 64, 86, .35);
+  color: #ff8292;
+}
+
+.account-modal-backdrop {
+  position: fixed;
+  z-index: 1200;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(9, 8, 11, .82);
+  backdrop-filter: blur(8px);
+  padding: 20px;
+  animation: account-modal-fade 160ms ease-out;
+}
+
+.account-modal {
+  width: min(420px, 100%);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  background: var(--color-surface);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, .55);
+  padding: 28px;
+  text-align: center;
+  animation: account-modal-rise 220ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.account-modal-icon {
+  width: 52px;
+  height: 52px;
+  margin: 0 auto 14px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(239, 64, 86, .12);
+  color: #ff8292;
+  font-size: 27px;
+}
+
+.account-modal h2 {
+  margin: 0 0 8px;
+  font-size: 24px;
+  font-weight: 500;
+}
+
+.account-modal-description {
+  max-width: 320px;
+  margin: 0 auto 18px;
+  color: var(--color-muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.delete-memory-preview {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-items: center;
+  column-gap: 12px;
+  margin: 0 0 20px;
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  background: var(--color-bg-soft);
+  padding: 10px;
+  text-align: left;
+}
+
+.delete-memory-preview img {
+  grid-row: 1 / 3;
+  width: 58px;
+  height: 58px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.delete-memory-preview strong {
+  align-self: end;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+}
+
+.delete-memory-preview small {
+  align-self: start;
+  color: var(--color-muted);
+  font-size: 11px;
+}
+
+.account-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.account-modal-actions button {
+  width: 100%;
+  min-height: 44px;
+  margin: 0;
+  border-radius: 9px;
+  padding: 11px 14px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.account-modal-actions .modal-cancel {
+  border: 1px solid var(--color-border);
+  background: var(--color-surface-strong);
+  color: var(--color-text);
+}
+
+.account-modal-actions .modal-delete {
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, #ef4056, #b91f3a);
+  color: white;
+}
+
+.account-modal-actions button:disabled {
+  opacity: .55;
+  cursor: wait;
+}
+
+@keyframes account-modal-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes account-modal-rise {
+  from { opacity: 0; transform: translateY(10px) scale(.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (max-width: 600px) {
+  .account-page {
+    padding: 96px 12px 110px;
+  }
+
+  .account-card {
+    padding: 22px 14px;
+  }
+
+  .memory-admin-row {
+    grid-template-columns: 56px 1fr;
+  }
+
+  .memory-admin-row img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .row-actions {
+    grid-column: 1 / -1;
+  }
+
+  .row-actions button {
+    flex: 1;
+  }
+
+  .memory-edit-form {
+    grid-template-columns: 1fr;
+  }
+
+  .wide-field {
+    grid-column: auto;
+  }
+
+  .category-list article {
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .category-list article > div {
+    flex-direction: column;
+  }
+
+  .account-modal-backdrop {
+    align-items: end;
+    padding: 12px;
+  }
+
+  .account-modal {
+    width: 100%;
+    border-radius: 18px 18px 12px 12px;
+    padding: 22px 18px calc(18px + env(safe-area-inset-bottom));
+  }
+
+  .account-modal-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .account-modal-actions .modal-cancel {
+    order: 2;
+  }
+}

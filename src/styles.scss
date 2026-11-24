@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;600&display=swap');
+
+:root {
+  --color-bg: #09080b;
+  --color-bg-soft: #100e13;
+  --color-surface: #17141c;
+  --color-surface-strong: #201b28;
+  --color-border: #302938;
+  --color-text: #f7f4f8;
+  --color-muted: #aaa4af;
+  --color-red: #ef4056;
+  --color-red-dark: #b91f38;
+  --color-violet: #a78bfa;
+  --color-violet-dark: #7653b8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+  background: var(--color-bg);
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: 'DM Sans', sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}

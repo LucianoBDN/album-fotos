@@ -1,0 +1,161 @@
+<main class="account-page">
+  <section class="account-card">
+    <header class="account-header">
+      <div>
+        <span class="eyebrow">MI CUENTA</span>
+        <h1>Configuración</h1>
+      </div>
+      <div class="account-avatar">♡</div>
+    </header>
+
+    <nav class="account-tabs" aria-label="Configuración">
+      <button type="button" [class.active]="activeSection() === 'profile'" (click)="setSection('profile')">Perfil</button>
+      <button type="button" [class.active]="activeSection() === 'memories'" (click)="setSection('memories')">Recuerdos</button>
+      <button type="button" [class.active]="activeSection() === 'categories'" (click)="setSection('categories')">Categorías</button>
+    </nav>
+
+    @if (errorMessage()) {
+      <p class="status-message error" role="alert">{{ errorMessage() }}</p>
+    }
+    @if (successMessage()) {
+      <p class="status-message success" role="status">{{ successMessage() }}</p>
+    }
+
+    @if (activeSection() === 'profile') {
+      <div class="profile-section">
+        <label>
+          Correo
+          <input type="email" [value]="auth.session()?.user.email ?? ''" readonly />
+        </label>
+        <p class="profile-note">Este correo pertenece a tu cuenta de Supabase.</p>
+      </div>
+    }
+
+    @if (activeSection() === 'memories') {
+      <p class="own-memory-count">{{ ownMemories.length }} recuerdos propios</p>
+      @if (ownMemories.length === 0) {
+        <div class="account-empty">
+          <span>♡</span>
+          <p>No subiste recuerdos todavía.</p>
+        </div>
+      } @else {
+        <div class="memories-admin">
+          @for (memory of ownMemories; track memory.id) {
+            @if (editingMemory()?.id === memory.id) {
+              <form class="memory-edit-form" [formGroup]="memoryForm" (ngSubmit)="saveMemory()">
+                <label>
+                  Título
+                  <input type="text" formControlName="title" maxlength="80" />
+                </label>
+                <label>
+                  Fecha
+                  <input type="date" formControlName="photoDate" />
+                </label>
+                <label>
+                  Categoría
+                  <select formControlName="categoryId">
+                    @for (category of categories(); track category.id) {
+                      <option [ngValue]="category.id">{{ category.name }}</option>
+                    }
+                  </select>
+                </label>
+                <label class="wide-field">
+                  Descripción
+                  <textarea formControlName="description" rows="3"></textarea>
+                </label>
+                <label class="wide-field">
+                  Dedicatoria
+                  <textarea formControlName="dedication" rows="3"></textarea>
+                </label>
+                <label class="favorite-field">
+                  <input type="checkbox" formControlName="isFavorite" />
+                  Favorito
+                </label>
+                <div class="edit-actions wide-field">
+                  <button type="submit" [disabled]="loading()">Guardar</button>
+                  <button type="button" class="secondary" (click)="cancelMemoryEdit()">Cancelar</button>
+                </div>
+              </form>
+            } @else {
+              <article class="memory-admin-row">
+                @if (memory.imageUrl) {
+                  <img [src]="memory.imageUrl" [alt]="memory.title || 'Recuerdo'" />
+                }
+                <div>
+                  <strong>{{ memory.title || 'Nuestro recuerdo' }}</strong>
+                  <small>{{ memory.photo_date }}</small>
+                  @if (memory.dedication) {
+                    <p>{{ memory.dedication }}</p>
+                  }
+                </div>
+                <div class="row-actions">
+                  <button type="button" (click)="beginMemoryEdit(memory)">Editar</button>
+                  <button type="button" class="delete" (click)="requestMemoryDelete(memory)">Eliminar</button>
+                </div>
+              </article>
+            }
+          }
+        </div>
+      }
+    }
+
+    @if (activeSection() === 'categories') {
+      <form class="category-form" [formGroup]="categoryForm" (ngSubmit)="createCategory()">
+        <input type="text" formControlName="name" maxlength="30" placeholder="Nueva categoría" />
+        <button type="submit" [disabled]="loading()">Agregar</button>
+      </form>
+
+      <div class="category-list">
+        @for (category of categories(); track category.id) {
+          <article>
+            <span>{{ category.name }}</span>
+            <div>
+              <button type="button" (click)="renameCategory(category)">Renombrar</button>
+              <button type="button" class="delete" (click)="deleteCategory(category)">Eliminar</button>
+            </div>
+          </article>
+        }
+      </div>
+    }
+
+    <button type="button" class="logout-button" (click)="logout()">Cerrar sesión</button>
+  </section>
+
+  @if (pendingMemoryDelete(); as memory) {
+    <div class="account-modal-backdrop" role="presentation" (click)="cancelMemoryDelete()">
+      <section class="account-modal" role="dialog" aria-modal="true" aria-labelledby="delete-memory-title" (click)="$event.stopPropagation()">
+        <span class="account-modal-icon" aria-hidden="true">♡</span>
+        <h2 id="delete-memory-title">¿Eliminar recuerdo?</h2>
+        <p class="account-modal-description">Se eliminará el recuerdo y su fotografía. Esta acción no se puede deshacer.</p>
+        <div class="delete-memory-preview">
+          @if (memory.imageUrl) {
+            <img [src]="memory.imageUrl" [alt]="memory.title || 'Recuerdo'" />
+          }
+          <strong>{{ memory.title || 'Nuestro recuerdo' }}</strong>
+          <small>{{ memory.photo_date }}</small>
+        </div>
+        <div class="account-modal-actions">
+          <button type="button" class="modal-cancel" (click)="cancelMemoryDelete()">Cancelar</button>
+          <button type="button" class="modal-delete" [disabled]="loading()" (click)="confirmMemoryDelete()">
+            {{ loading() ? 'Eliminando...' : 'Eliminar recuerdo' }}
+          </button>
+        </div>
+      </section>
+    </div>
+  }
+
+  @if (pendingCategoryDelete(); as category) {
+    <div class="account-modal-backdrop" role="presentation" (click)="cancelCategoryDelete()">
+      <section class="account-modal" role="dialog" aria-modal="true" aria-labelledby="delete-category-title" (click)="$event.stopPropagation()">
+        <span class="account-modal-icon" aria-hidden="true">♡</span>
+        <h2 id="delete-category-title">¿Eliminar categoría?</h2>
+        <p>Solo se puede eliminar si no tiene recuerdos asociados.</p>
+        <strong>{{ category.name }}</strong>
+        <div class="account-modal-actions">
+          <button type="button" class="modal-cancel" (click)="cancelCategoryDelete()">Cancelar</button>
+          <button type="button" class="modal-delete" (click)="confirmCategoryDelete()">Eliminar</button>
+        </div>
+      </section>
+    </div>
+  }
+</main>

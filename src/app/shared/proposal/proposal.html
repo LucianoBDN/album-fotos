@@ -1,0 +1,35 @@
+<section class="proposal-page">
+  <div class="proposal-photos" aria-hidden="true">
+    @for (image of config.images; track image; let index = $index) {
+      <div class="proposal-photo" [style.--photo-index]="index">
+        <img [src]="image" alt="" />
+      </div>
+    }
+  </div>
+  <div class="proposal-card">
+    <span class="proposal-heart" aria-hidden="true">♡</span>
+    @if (stage() === 'celebration') {
+      <h1>{{ config.acceptedTitle }}</h1>
+      <p class="proposal-subtitle">El contador ya está comenzando.</p>
+      <div class="proposal-actions">
+        <button type="button" class="yes-button" (click)="continueToApp()">Continuar</button>
+      </div>
+    } @else {
+    <h1>
+      @if (stage() === 'yes-only') {
+        {{ config.finalTitle }}
+      } @else if (stage() === 'confirm') {
+        {{ config.confirmTitle }}
+      } @else {
+        {{ config.title }}
+      }
+    </h1>
+    <div class="proposal-actions">
+      <button type="button" class="yes-button" (click)="accept()">Sí</button>
+      @if (stage() !== 'yes-only') {
+        <button type="button" class="no-button" (click)="decline()">No</button>
+      }
+    </div>
+    }
+  </div>
+</section>

@@ -1,0 +1,87 @@
+
+<main class="home-page">
+  <section class="memories-section">
+    <div class="section-heading">
+      <div>
+        <span class="eyebrow">THE BEGINNING</span>
+        <h2>Nuestros recuerdos</h2>
+      </div>
+      <span class="memory-count">{{ favoriteMemories.length }} favoritos</span>
+    </div>
+
+    @if (favoriteMemories.length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">♡</div>
+        <h3>Todo comienza con un recuerdo.</h3>
+        <p>Todavía no hay fotografías. Pronto este espacio estará lleno de momentos nuestros.</p>
+      </div>
+    } @else {
+      <div class="photo-roll">
+        @for (memory of pagedFavoriteMemories; track memory.id; let index = $index) {
+          <article
+            class="photo-card"
+            [class.flipped]="flippedCards().has(memory.id)"
+            [style.--tilt]="((index % 5) - 2) * 2 + 'deg'"
+            [style.--offset]="((index % 3) - 1) * 10 + 'px'"
+          >
+            <span class="photo-inner">
+              <span class="photo-front">
+                @if (memory.imageUrl) {
+                  <button
+                    type="button"
+                    class="photo-open"
+                    [attr.aria-label]="'Ver foto ampliada: ' + (memory.title || 'recuerdo')"
+                    (click)="openPhoto(memory)"
+                  >
+                    <img [src]="memory.imageUrl" [alt]="memory.title || 'Recuerdo'" />
+                  </button>
+                }
+                <span class="photo-caption">
+                  {{ memory.title || 'Nuestro recuerdo' }}
+                </span>
+                <button
+                  type="button"
+                  class="flip-button"
+                  [attr.aria-label]="flippedCards().has(memory.id) ? 'Ver foto' : 'Ver dedicatoria'"
+                  (click)="toggleCard(memory.id)"
+                >
+                  ♡
+                </button>
+              </span>
+              <span class="photo-back">
+                <span class="back-date">{{ memory.photo_date }}</span>
+                <span class="dedication">
+                  {{ memory.dedication || 'Para siempre contigo.' }}
+                </span>
+                <span class="back-heart">♡</span>
+                <button type="button" class="flip-button back-flip" (click)="toggleCard(memory.id)">
+                  Ver foto
+                </button>
+              </span>
+            </span>
+          </article>
+        }
+      </div>
+      <div class="pagination" aria-label="Paginacion">
+        <button type="button" (click)="previousPage()" [disabled]="page() === 1">←</button>
+        <span>{{ page() }} / {{ totalPages }}</span>
+        <button type="button" (click)="nextPage()" [disabled]="page() === totalPages">→</button>
+      </div>
+    }
+  </section>
+
+  @if (selectedMemory(); as memory) {
+    <div class="photo-lightbox" role="dialog" aria-modal="true" [attr.aria-label]="memory.title || 'Foto ampliada'" (click)="closePhoto()">
+      <button type="button" class="lightbox-close" aria-label="Cerrar" (click)="closePhoto()">×</button>
+      @if (memory.imageUrl) {
+        <img [src]="memory.imageUrl" [alt]="memory.title || 'Recuerdo'" (click)="$event.stopPropagation()" />
+      }
+      @if (memory.title || memory.photo_date) {
+        <div class="lightbox-caption" (click)="$event.stopPropagation()">
+          @if (memory.title) { <strong>{{ memory.title }}</strong> }
+          <span>{{ memory.photo_date }}</span>
+        </div>
+      }
+    </div>
+  }
+</main>

@@ -1,0 +1,8 @@
+@if (proposal.accepted() && visible()) {
+  <aside class="relationship-counter" aria-label="Tiempo juntos">
+    <span class="counter-label">Tiempo juntos</span>
+    <strong>
+      {{ proposal.getElapsed().totalDays }} días
+    </strong>
+  </aside>
+}

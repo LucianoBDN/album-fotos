@@ -1,0 +1,88 @@
+:host {
+  display: block;
+  min-height: 100dvh;
+  position: relative;
+}
+
+.app-loading {
+  min-height: 100dvh;
+  background: var(--color-bg);
+}
+
+.install-popup {
+  position: fixed;
+  z-index: 1000;
+  left: 12px;
+  right: 12px;
+  bottom: 82px;
+  max-width: 520px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 42px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  background: rgba(23, 20, 28, .96);
+  box-shadow: 0 18px 50px rgba(0, 0, 0, .45);
+  backdrop-filter: blur(16px);
+  padding: 12px 48px 12px 12px;
+  color: var(--color-text);
+}
+
+.install-popup-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--color-red), var(--color-red-dark));
+  color: white;
+  font-size: 24px;
+}
+
+.install-popup-content {
+  min-width: 0;
+  display: grid;
+  gap: 2px;
+}
+
+.install-popup-content strong {
+  font-size: 13px;
+}
+
+.install-popup-content span {
+  color: var(--color-muted);
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.install-popup-close {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  background: transparent;
+  color: var(--color-muted);
+  font-size: 22px;
+  cursor: pointer;
+}
+
+.install-popup-button {
+  border: 0;
+  border-radius: 9px;
+  background: linear-gradient(135deg, var(--color-red), var(--color-red-dark));
+  color: white;
+  padding: 9px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+@media (min-width: 769px) {
+  .install-popup {
+    display: none;
+  }
+}

@@ -1,0 +1,34 @@
+@if (visible()) {
+  <nav class="app-navigation" aria-label="Navegacion principal">
+    <a class="brand" routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <span class="brand-symbol" aria-hidden="true">♡</span>
+      <span class="brand-name">OUR MEMORIES</span>
+    </a>
+
+    <div class="nav-links">
+      <a routerLink="/home" [class.active]="activeUrl() === '/home'">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 10.8 12 3l9 7.8v8.7a1.5 1.5 0 0 1-1.5 1.5h-5v-6h-5v6h-5A1.5 1.5 0 0 1 3 19.5z"/></svg>
+        <span>Inicio</span>
+      </a>
+      <a routerLink="/album" [class.active]="activeUrl() === '/album'">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>
+        <span>Álbum</span>
+      </a>
+      <a class="add-link" routerLink="/add-memory" [class.active]="activeUrl() === '/add-memory'" aria-label="Agregar recuerdo">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>
+        <span>Agregar</span>
+      </a>
+      <a routerLink="/chat" [class.active]="activeUrl() === '/chat'">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H9l-5 4v-4.5A2 2 0 0 1 2 14.5V6a2 2 0 0 1 3-2zm2.5 5.5h9M7.5 13h6"/></svg>
+        <span>Chat</span>
+        @if (chat.unreadCount() > 0) {
+          <b class="chat-badge">{{ chat.unreadCount() > 99 ? '99+' : chat.unreadCount() }}</b>
+        }
+      </a>
+      <a routerLink="/account" class="account-link" [class.active]="activeUrl() === '/account'">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4.5 21a7.5 7.5 0 0 1 15 0"/></svg>
+        <span>Cuenta</span>
+      </a>
+    </div>
+  </nav>
+}

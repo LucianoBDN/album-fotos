@@ -1,0 +1,100 @@
+<main class="chat-page">
+  <section class="chat-shell">
+    <header class="chat-header">
+      <div class="avatar">♡</div>
+      <div>
+        <span class="eyebrow">NUESTRO CHAT</span>
+        <h1>Nosotros</h1>
+      </div>
+      <button type="button" class="notification-button" (click)="enableNotifications()" aria-label="Activar notificaciones">
+        ♫
+      </button>
+    </header>
+
+    @if (loading() && !partner()) {
+      <div class="chat-empty" role="status">
+        <div class="chat-loading-spinner" aria-hidden="true"></div>
+        <h2>Cargando conversación...</h2>
+      </div>
+    } @else if (!partner()) {
+      <div class="chat-empty">
+        <span>♡</span>
+        <h2>La conversación todavía no está vinculada.</h2>
+        <p>Registrá a la pareja en <strong>couple_pairs</strong> desde Supabase.</p>
+        @if (errorMessage()) {
+          <p class="chat-retry-error">{{ errorMessage() }}</p>
+          <button type="button" class="chat-retry" (click)="retryLoad()">Reintentar</button>
+        }
+      </div>
+    } @else {
+      <div class="messages-scroll">
+        @if (loading()) {
+          <p class="chat-status">Cargando mensajes...</p>
+        } @else if (messages().length === 0) {
+          <div class="chat-empty compact">
+            <span>♡</span>
+            <h2>Este es el comienzo de nuestra conversación.</h2>
+          </div>
+        } @else {
+          @for (message of messages(); track message.id) {
+            <article
+              class="message"
+              [class.mine]="message.sender_id === currentUserId()"
+            >
+              <p>{{ message.content }}</p>
+              <time>
+                {{ formatTime(message.sent_at) }}
+                @if (message.sender_id === currentUserId()) {
+                  <span>{{ message.read_at ? '✓✓' : '✓' }}</span>
+                }
+              </time>
+              @if (message.sender_id === currentUserId()) {
+                <button type="button" class="delete-message" (click)="requestDelete(message)" aria-label="Eliminar mensaje">×</button>
+              }
+            </article>
+          }
+        }
+      </div>
+
+      @if (errorMessage()) {
+        <p class="chat-error" role="alert">{{ errorMessage() }}</p>
+      }
+
+      <form class="chat-form" [formGroup]="form" (ngSubmit)="sendMessage()">
+        <input
+          type="text"
+          formControlName="content"
+          maxlength="4000"
+          placeholder="Escribí un mensaje..."
+          autocomplete="off"
+        />
+        <button type="submit" [disabled]="form.invalid" aria-label="Enviar mensaje">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m3 20 18-8L3 4l2 6 10 2-10 2z"/>
+          </svg>
+        </button>
+      </form>
+    }
+  </section>
+
+  @if (pendingDelete(); as message) {
+    <div class="delete-modal-backdrop" role="presentation" (click)="cancelDelete()">
+      <section
+        class="delete-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="delete-message-title"
+        (click)="$event.stopPropagation()"
+      >
+        <span class="delete-modal-icon" aria-hidden="true">♡</span>
+        <h2 id="delete-message-title">¿Eliminar mensaje?</h2>
+        <p>Este mensaje desaparecerá de la conversación.</p>
+        <blockquote>{{ message.content }}</blockquote>
+        <div class="delete-modal-actions">
+          <button type="button" class="delete-modal-cancel" (click)="cancelDelete()">Cancelar</button>
+          <button type="button" class="delete-modal-confirm" (click)="confirmDelete()">Eliminar</button>
+        </div>
+      </section>
+    </div>
+  }
+</main>

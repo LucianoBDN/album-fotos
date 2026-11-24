@@ -1,0 +1,137 @@
+<main class="album-page">
+  <section class="album-header">
+    <div>
+      <span class="eyebrow">NUESTRO ÁLBUM</span>
+      <h1>Todos nuestros momentos</h1>
+    </div>
+  </section>
+
+  <div class="album-filters" aria-label="Filtros del álbum">
+    <button type="button" [class.active]="categoryId() === null" (click)="setCategory(null)">Todas</button>
+    @for (category of categories(); track category.id) {
+      <button type="button" [class.active]="categoryId() === category.id" (click)="setCategory(category.id)">
+        {{ category.name }}
+      </button>
+    }
+  </div>
+
+  <label class="year-filter">
+    Año
+    <select [value]="year()" (change)="setYear($any($event.target).value)">
+      <option value="all">Todos los años</option>
+      @for (availableYear of years; track availableYear) {
+        <option [value]="availableYear">{{ availableYear }}</option>
+      }
+    </select>
+  </label>
+
+  @if (errorMessage()) {
+    <div class="album-error" role="alert">
+      <p>{{ errorMessage() }}</p>
+      <button type="button" (click)="loadPage()">Reintentar</button>
+    </div>
+  }
+  @if (successMessage()) {
+    <p class="success-message" role="status">{{ successMessage() }}</p>
+  }
+
+  @if (loading()) {
+    <div class="album-state" role="status">
+      <div class="loading-spinner" aria-hidden="true"></div>
+      <p>Cargando recuerdos...</p>
+    </div>
+  } @else if (pagedMemories.length === 0) {
+    <div class="empty-state">
+      <div class="empty-icon">♡</div>
+      <h2>No hay recuerdos con estos filtros.</h2>
+    </div>
+  } @else {
+    <div class="album-grid">
+      @for (memory of pagedMemories; track memory.id) {
+        <article class="album-photo" [class.flipped]="flippedCards().has(memory.id)">
+          <div
+            class="album-photo-inner"
+            [style.transform]="flippedCards().has(memory.id) ? 'rotateY(180deg)' : 'rotateY(0deg)'"
+          >
+            <div class="album-photo-front">
+              @if (memory.imageUrl) {
+                <button type="button" class="album-photo-open" (click)="openPhoto(memory)">
+                  @if (!imageLoaded().has(memory.id)) {
+                    <span class="image-skeleton" aria-label="Cargando fotografía"></span>
+                  }
+                  <img
+                    [src]="memory.imageUrl"
+                    [alt]="memory.title || 'Recuerdo'"
+                    [class.loaded]="imageLoaded().has(memory.id)"
+                    (load)="markImageLoaded(memory.id)"
+                  />
+                </button>
+              }
+              <span class="album-photo-caption">
+                <strong>{{ memory.title || 'Nuestro recuerdo' }}</strong>
+                <small>{{ memory.photo_date }}</small>
+              </span>
+              <button type="button" class="flip-button" aria-label="Ver dedicatoria" (click)="toggleCard(memory.id); $event.stopPropagation()">
+                ♡
+              </button>
+              <button
+                type="button"
+                class="favorite-button"
+                [class.favorite]="memory.is_favorite"
+                [attr.aria-label]="memory.is_favorite ? 'Quitar de favoritos' : 'Agregar a favoritos'"
+                (click)="toggleFavorite(memory)"
+              >
+                ♥
+              </button>
+            </div>
+            <div class="album-photo-back">
+              <span class="back-date">{{ memory.photo_date }}</span>
+              <span class="dedication">{{ memory.dedication || 'Para siempre contigo.' }}</span>
+              <button type="button" class="flip-button back-flip" (click)="toggleCard(memory.id)">Ver foto</button>
+              <button
+                type="button"
+                class="favorite-button back-favorite"
+                [class.favorite]="memory.is_favorite"
+                (click)="toggleFavorite(memory)"
+              >
+                {{ memory.is_favorite ? '♥ Favorito' : '♡ Agregar favorito' }}
+              </button>
+            </div>
+          </div>
+        </article>
+      }
+    </div>
+
+    <div class="pagination">
+      <button type="button" (click)="previousPage()" [disabled]="page() === 1">←</button>
+      <span>{{ page() }} / {{ totalPages }}</span>
+      <button type="button" (click)="nextPage()" [disabled]="page() === totalPages">→</button>
+    </div>
+  }
+
+  @if (selectedMemory(); as memory) {
+    <div class="photo-lightbox" role="dialog" aria-modal="true" (click)="closePhoto()">
+      <button type="button" class="lightbox-close" aria-label="Cerrar" (click)="closePhoto()">×</button>
+      @if (memory.imageUrl) {
+        <img [src]="memory.imageUrl" [alt]="memory.title || 'Recuerdo'" (click)="$event.stopPropagation()" />
+      }
+    </div>
+  }
+
+  @if (selectedDedication(); as memory) {
+    <div class="dedication-modal" role="dialog" aria-modal="true" (click)="selectedDedication.set(null)">
+      <button type="button" class="dedication-close" aria-label="Cerrar" (click)="selectedDedication.set(null)">×</button>
+      <article class="dedication-card" (click)="$event.stopPropagation()">
+        <span class="dedication-date">{{ memory.photo_date }}</span>
+        @if (memory.imageUrl) {
+          <img [src]="memory.imageUrl" [alt]="memory.title || 'Recuerdo'" />
+        }
+        <div class="dedication-content">
+          <span class="dedication-heart">♡</span>
+          <p>{{ memory.dedication || 'Para siempre contigo.' }}</p>
+          <button type="button" (click)="selectedDedication.set(null)">Volver a la foto</button>
+        </div>
+      </article>
+    </div>
+  }
+</main>

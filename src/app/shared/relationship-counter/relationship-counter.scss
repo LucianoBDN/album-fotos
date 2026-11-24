@@ -1,0 +1,41 @@
+:host {
+  display: block;
+}
+
+.relationship-counter {
+  position: fixed;
+  z-index: 45;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  border: 1px solid rgba(167, 139, 250, .18);
+  border-radius: 999px;
+  background: rgba(23, 20, 28, .94);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .22);
+  backdrop-filter: blur(14px);
+  padding: 8px 14px;
+  white-space: nowrap;
+}
+
+.counter-label {
+  color: var(--color-violet);
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.relationship-counter strong {
+  font-family: 'Caveat', cursive;
+  font-size: 18px;
+  color: var(--color-text);
+}
+
+@media (max-width: 600px) {
+  .relationship-counter {
+    top: auto;
+    bottom: calc(92px + env(safe-area-inset-bottom));
+  }
+}

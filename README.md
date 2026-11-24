@@ -1,5 +1,13 @@
 # NuestroAlbum
 
+## Configuración local
+
+1. Copia `public/runtime-config.example.json` como `public/runtime-config.json`.
+2. Completá `supabaseUrl` y `supabaseKey` con los datos públicos del proyecto de Supabase.
+3. Iniciá la aplicación con `npm start`.
+
+`public/runtime-config.json` está excluido de Git para que cada entorno pueda usar su propia configuración.
+
 This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.3.0.
 
 ## Development server
